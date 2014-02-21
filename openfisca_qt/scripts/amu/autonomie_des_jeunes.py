@@ -40,22 +40,28 @@ from openfisca_core.simulations import ScenarioSimulation
 def get_couple_with_child_results_datatframe(sali_vous = 0, sali_conj = 0):
     simulation = ScenarioSimulation()
     simulation.set_config(year = 2013,
-                          nmen = 1)
+                          nmen = 1,
+                          "so" = 2)
+                        
 
     # Adding a husband/wife on the same tax sheet (ie foyer, as conj) and of course same family (as part)
     simulation.scenario.addIndiv(1, datetime.date(1975, 1, 1), 'conj', 'part')
 
     # Adding 1 kids on the same tax sheet and family
-    simulation.scenario.addIndiv(2, datetime.date(1993, 1, 1), 'pac', 'enf')
+    simulation.scenario.addIndiv(2, datetime.date(1990, 1, 1), 'pac', 'enf')
+    
 
     # Changing the revenu of the parents
     scenario = simulation.scenario
     scenario.indiv[0]['sali'] = sali_vous
     scenario.indiv[1]['sali'] = sali_conj
 
+    
+    
     # Set the number of major kids in the
     scenario.declar[0]['nbJ'] = 1
 
+        
     # Set legislative parameters
     simulation.set_param()
 
@@ -63,20 +69,24 @@ def get_couple_with_child_results_datatframe(sali_vous = 0, sali_conj = 0):
     df = simulation.get_results_dataframe()
     return df
 
-
+    
 def get_couple_without_child_results_datatframe(sali_vous = 0, sali_conj = 0, pension_alimentaire = 0):
     simulation = ScenarioSimulation()
     simulation.set_config(year = 2013,
-                          nmen = 1)
+                          nmen = 1,
+                          "so" = 2)
 
     # Adding a husband/wife on the same tax sheet (ie foyer, as conj) and of course same family (as part)
     simulation.scenario.addIndiv(1, datetime.date(1975, 1, 1), 'conj', 'part')
-
+    
+    
     # Changing the revenu of the parents
     scenario = simulation.scenario
     scenario.indiv[0]['sali'] = sali_vous
     scenario.indiv[1]['sali'] = sali_conj
-
+    
+    
+   
     # Set the number of major kids in the
     scenario.declar[0]['f6gi'] = pension_alimentaire
 
@@ -91,12 +101,15 @@ def get_couple_without_child_results_datatframe(sali_vous = 0, sali_conj = 0, pe
 def get_child_results_datatframe(pension_alimentaire = 0):
     simulation = ScenarioSimulation()
     simulation.set_config(year = 2013,
-                          nmen = 1)
+                          nmen = 1,
+                          "so" = 2)
 
-    scenario = simulation.scenario
-
+       
     # Set the number of major kids in the
     scenario.declar[0]['alr'] = pension_alimentaire
+    
+    
+    
     # Set legislative parameters
     simulation.set_param()
 
@@ -110,7 +123,8 @@ if __name__ == '__main__':
     sali_vous = 12 * 3000
     sali_conj = 12 * 3000
     pension_alimentaire = 12 * 500
-
+    val_type = 400
+    
     df_couple_with_child = get_couple_with_child_results_datatframe(sali_vous = sali_vous,
                                                                     sali_conj = sali_conj)
 
